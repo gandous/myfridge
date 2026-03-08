@@ -1,0 +1,27 @@
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    restart: on-failure
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: myfridge
+      POSTGRES_DB: myfridge
+    volumes:
+      - postgres:/var/lib/postgresql:rw
+
+  pgweb:
+    container_name: pgweb
+    restart: on-failure
+    image: sosedoff/pgweb
+    ports:
+      - "127.0.0.1:8000:8081"
+    environment:
+      - PGWEB_DATABASE_URL=postgres://myfridge:password@db:5432/myfridge?sslmode=disable
+    depends_on:
+      - db
+
+volumes:
+  postgres:

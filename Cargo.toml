@@ -1,6 +1,39 @@
-[package]
-name = "myfridge"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+members = [
+    "myfridge",
+    "myfridge-domain",
+    "myfridge-migration",
+    "myfridge-model",
+]
+resolver = "3"
 
-[dependencies]
+[workspace.package]
+edition = "2021"
+
+[workspace.dependencies]
+myfridge-migration = { path = "myfridge-migration" }
+myfridge-domain = { path = "myfridge-domain"}
+myfridge-model = { path = "myfridge-model" }
+
+actix-web = "4.13.0"
+sea-orm = { version = "2.0.0-rc", features = [
+    "sqlx-postgres",
+    "runtime-tokio-native-tls",
+    "macros",
+] }
+sea-orm-migration = { version = "2.0.0-rc", features = [
+    "sqlx-postgres",
+    "runtime-tokio-native-tls",
+] }
+envy = "0.4.2"
+dotenvy = "0.15.7"
+serde = "1.0"
+tracing = "0.1.44"
+tracing-log = "0.2.0"
+tracing-subscriber = "0.3.22"
+pbkdf2 = { version = "0.12.2", features = ["simple"] }
+anyhow = "1.0.102"
+thiserror = "2.0.18"
+jsonwebtoken = "10.3.0"
+time = "0.3.47"
+base64 = "0.22.1"
