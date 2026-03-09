@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-03-09 22:03+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: fr\n"
+
+#: src/app/(auth)/login.tsx:45
+msgid "Password:"
+msgstr ""
+
+#: src/components/ui/Loader.tsx:35
+msgid "Retry"
+msgstr ""
+
+#: src/app/(auth)/login.tsx:35
+msgid "Username:"
+msgstr ""
