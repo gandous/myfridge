@@ -11,6 +11,9 @@ import { I18nProvider } from "@lingui/react";
 import { i18n } from "@lingui/core";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useLocales } from "expo-localization";
+import { Provider } from "react-redux";
+import store from "@/store";
+import AuthProvider from "@/contexts/useAuth";
 
 import { messages as messagesEn } from "@/locales/en/messages";
 import { messages as messagesFr } from "@/locales/fr/messages";
@@ -51,14 +54,16 @@ export default function Layout() {
 
   return (
     <I18nProvider i18n={i18n}>
-      {/*<Provider store={store}>*/}
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={ReactNavigationTheme}>
-          <StatusBar style="auto" />
-          {Platform.OS === "web" ? <WebApp /> : <App />}
-        </ThemeProvider>
-      </GestureHandlerRootView>
-      {/*</Provider>*/}
+      <Provider store={store}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemeProvider value={ReactNavigationTheme}>
+            <AuthProvider>
+              <StatusBar style="auto" />
+              {Platform.OS === "web" ? <WebApp /> : <App />}
+            </AuthProvider>
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </Provider>
     </I18nProvider>
   );
 }

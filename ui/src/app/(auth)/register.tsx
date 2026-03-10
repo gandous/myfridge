@@ -7,20 +7,23 @@ import Button from "@/components/ui/Button";
 import AuthContainer from "@/components/AuthContainer";
 import TextError from "@/components/ui/TextError";
 import AuthLink from "@/components/AuthLink";
-import { useLoginMutation } from "@/api/auth";
+import { useRegisterMutation } from "@/api/auth";
 import { useAuthProvider } from "@/contexts/useAuth";
 
 export default function Login() {
   const { setToken } = useAuthProvider();
-  const [login, result] = useLoginMutation();
+  const [register, result] = useRegisterMutation();
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm({ defaultValues: { email: "", password: "" } });
+  } = useForm({
+    defaultValues: { email: "", password: "", "repeat-password": "" },
+  });
 
   function onSubmit(data) {
-    login({ email: data.email, password: data.password })
+    register({ email: data.email, password: data.password })
       .unwrap()
       .then((data) => {
         setToken(data.token);
@@ -49,12 +52,26 @@ export default function Login() {
         editable={!result.isLoading}
         errors={errors}
       />
+      <ControlTextInput
+        name="repeat-password"
+        label={t`Repeat password:`}
+        rules={{
+          required: true,
+          validate: (value) =>
+            value === watch("password") || "Password don't match",
+        }}
+        control={control}
+        textContentType="password"
+        secureTextEntry={true}
+        errors={errors}
+        editable={!result.isLoading}
+      />
       <TextError error={result.error} />
       <Button
         loading={result.isLoading}
         onPress={() => handleSubmit(onSubmit)()}
         color="primary"
-        title={t`Login`}
+        title={t`Register`}
         disabled={result.isLoading}
       />
       <AuthLink
@@ -64,8 +81,8 @@ export default function Login() {
             href: "/reset-password",
           },
           {
-            name: t`Register`,
-            href: "/register",
+            name: t`Login`,
+            href: "/login",
           },
         ]}
       />

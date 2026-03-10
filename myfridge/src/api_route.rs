@@ -7,6 +7,7 @@ pub fn api_route(cfg: &mut web::ServiceConfig) {
             .service(api::index)
             .service(api::option)
             .service(api::auth::register::post)
+            .service(api::auth::login::post)
             .default_service(web::route().to(api::error::not_found)),
     );
 }

@@ -24,11 +24,11 @@ pub async fn spawn(config: Config) {
         }
         App::new().service(
             web::scope("")
+                .wrap(logger::Logger)
+                .wrap(default_header)
                 .app_data(web::Data::new(db.clone()))
                 .app_data(config_data.clone())
                 .app_data(jwt_data.clone())
-                .wrap(logger::Logger)
-                .wrap(default_header)
                 .configure(api_route),
         )
     })
