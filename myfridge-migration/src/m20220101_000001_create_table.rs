@@ -1,3 +1,4 @@
+use myfridge_domain::Email;
 use sea_orm_migration::{prelude::*, schema::*};
 
 #[derive(DeriveMigrationName)]
@@ -12,7 +13,7 @@ impl MigrationTrait for Migration {
                     .table("user")
                     .if_not_exists()
                     .col(pk_auto("id"))
-                    .col(string_len_uniq("email", 128))
+                    .col(string_len_uniq("email", Email::MAX_LEN as u32))
                     .col(string("password"))
                     .to_owned(),
             )

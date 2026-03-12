@@ -2018,6 +2018,7 @@ dependencies = [
 name = "myfridge-migration"
 version = "0.1.0"
 dependencies = [
+ "myfridge-domain",
  "sea-orm-migration",
  "tokio",
 ]

@@ -6,7 +6,7 @@ use serde::Serialize;
 pub struct Email(String);
 
 impl Email {
-    pub const MAX_LEN: usize = 32;
+    pub const MAX_LEN: usize = 128;
 
     pub fn parse(s: String) -> Result<Self, DomainError> {
         if s.len() > Self::MAX_LEN {

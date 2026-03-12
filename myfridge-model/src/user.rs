@@ -26,6 +26,15 @@ impl Entity {
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+pub enum Relation {
+    #[sea_orm(has_many = "super::virtual_fridge_item::Entity")]
+    VirtualFridgeItem,
+}
+
+impl Related<super::virtual_fridge_item::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::VirtualFridgeItem.def()
+    }
+}
 
 impl ActiveModelBehavior for ActiveModel {}

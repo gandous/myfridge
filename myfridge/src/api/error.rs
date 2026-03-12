@@ -8,8 +8,10 @@ use std::fmt::Debug;
 
 #[derive(Debug, thiserror::Error)]
 pub enum ApiError {
+    InvalidToken,
     InvalidCredential,
     NotFound,
+    InternalServerError,
     DomainError(#[from] myfridge_domain::DomainError),
     DbError(#[from] sea_orm::DbErr),
     Context(#[from] anyhow::Error),
@@ -18,8 +20,10 @@ pub enum ApiError {
 impl ApiError {
     pub fn status_code(&self) -> StatusCode {
         match self {
+            Self::InvalidToken => StatusCode::UNAUTHORIZED,
             Self::InvalidCredential => StatusCode::BAD_REQUEST,
             Self::NotFound => StatusCode::NOT_FOUND,
+            Self::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
             Self::DomainError(_) => StatusCode::BAD_REQUEST,
             Self::DbError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Self::Context(_) => StatusCode::INTERNAL_SERVER_ERROR,
