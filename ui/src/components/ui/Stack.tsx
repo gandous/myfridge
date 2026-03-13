@@ -9,7 +9,7 @@ interface StackProps extends React.ComponentProps<typeof View> {
   marginHorizontal?: "sm" | "md" | "lg" | "xl";
 }
 
-export default function HStack({
+export default function Stack({
   children,
   direction,
   gap,

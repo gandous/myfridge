@@ -9,18 +9,20 @@ import Stack from "@/components/ui/Stack";
 import ActivityIndicator from "@/components/ui/ActivityIndicator";
 import TextError from "./TextError";
 
-type LoaderProps<T, U, V extends BaseQueryFn> = {
-  query: TypedUseQuery<T, U, V>;
-  param?: U;
+type LoaderProps<T> = {
+  query: {
+    data?: T | undefined;
+    error?: any;
+    isLoading: boolean;
+    isFetching: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
   render: (data: T) => React.ReactNode;
 };
 
-export default function Loader<T, U, V extends BaseQueryFn>({
-  query,
-  param,
-  render,
-}: LoaderProps<T, U, V>) {
-  const { data, isLoading, error, refetch } = query(param as any);
+export default function Loader<T>({ query, render }: LoaderProps<T>) {
+  const { data, error, isLoading, isFetching, isError, refetch } = query;
 
   if (isLoading) {
     return (
@@ -36,7 +38,7 @@ export default function Loader<T, U, V extends BaseQueryFn>({
       </Stack>
     );
   } else {
-    return render(data);
+    return render(data as T);
   }
 }
 

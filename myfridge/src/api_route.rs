@@ -9,6 +9,7 @@ pub fn api_route(cfg: &mut web::ServiceConfig) {
             .service(api::auth::register::post)
             .service(api::auth::login::post)
             .service(api::virtual_fridge::add_item::post)
+            .service(api::virtual_fridge::get_content::get)
             .default_service(web::route().to(api::error::not_found)),
     );
 }

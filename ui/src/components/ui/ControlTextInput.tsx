@@ -12,8 +12,10 @@ import TextInput from "./TextInput";
 import Text from "./Text";
 import { StyleSheet } from "react-native-unistyles";
 
-interface ControlTextInputProps<TFieldValues extends FieldValues>
-  extends Omit<React.ComponentProps<typeof TextInput>, "defaultValue"> {
+interface ControlTextInputProps<TFieldValues extends FieldValues> extends Omit<
+  React.ComponentProps<typeof TextInput>,
+  "defaultValue"
+> {
   control: ControllerProps<TFieldValues>["control"];
   name: FieldPath<TFieldValues>;
   rules?: ControllerProps<TFieldValues>["rules"];
