@@ -3,6 +3,8 @@ import {
   FridgeItem,
   ItemsResponse,
   useVirtualFridgeAddItemMutation,
+  useVirtualFridgeDeleteItemMutation,
+  useVirtualFridgeEditItemMutation,
   useVirtualFrigeGetItemsQuery,
 } from "@/api/virtual_fridge";
 import Loader from "@/components/ui/Loader";
@@ -18,6 +20,10 @@ import ControlTextInput from "@/components/ui/ControlTextInput";
 import TextError from "@/components/ui/TextError";
 import Card from "@/components/ui/Card";
 import HSeparator from "@/components/ui/HSeparator";
+import { Pressable } from "react-native-gesture-handler";
+import Icon from "@/components/ui/Icon";
+import TextInput from "@/components/ui/TextInput";
+import { StyleSheet } from "react-native-unistyles";
 
 type MyFridgeAddItemModalProps = {
   open: boolean;
@@ -61,12 +67,6 @@ function MyFridgeAddItemModal({ open, close }: MyFridgeAddItemModalProps) {
           control={control}
           errors={errors}
         />
-        {/*<ControlTextInput
-          label={t`Quantity:`}
-          name="quantity"
-          control={control}
-          errors={errors}
-        />*/}
         <InputQuantity name="quantity" control={control} />
         <TextError error={result.error} />
         <Stack direction="horizontal" style={{ justifyContent: "flex-end" }}>
@@ -88,11 +88,29 @@ type MyFridgeItemsRowProps = {
 };
 
 function MyFridgeItemsRow({ item }: MyFridgeItemsRowProps) {
+  const [value, setValue] = useState(item.quantity.toString());
+  const [editItem] = useVirtualFridgeEditItemMutation();
+  const [deleteItem] = useVirtualFridgeDeleteItemMutation();
+
+  function saveItem() {
+    editItem({ id: item.id, quantity: Number(value) });
+  }
+
   return (
-    <Stack direction="horizontal">
-      <Text>{item.item_name}</Text>
-      <Text>{item.quantity}</Text>
+    <Stack direction="horizontal" gap="md">
+      <Text style={{ flex: 1 }}>{item.item_name}</Text>
+      <TextInput
+        value={value}
+        onChangeText={(text) => setValue(text)}
+        onBlur={saveItem}
+      />
       <Text>{item.unit}</Text>
+      <Pressable
+        style={styles.deletePressable}
+        onPress={() => deleteItem(item.id)}
+      >
+        <Icon name="trash" style={styles.deleteIcon} size="sm" />
+      </Pressable>
     </Stack>
   );
 }
@@ -114,7 +132,7 @@ function MyFridgeItems({ items }: ItemsResponse) {
 
 export default function MyFridge() {
   const virtualFridgeGetItemsQuery = useVirtualFrigeGetItemsQuery();
-  const [addItemModalIsOpen, setAddItemModalIsOpen] = useState(true);
+  const [addItemModalIsOpen, setAddItemModalIsOpen] = useState(false);
 
   return (
     <PageContainer
@@ -129,3 +147,17 @@ export default function MyFridge() {
     </PageContainer>
   );
 }
+
+const styles = StyleSheet.create((theme) => ({
+  deletePressable: {
+    marginLeft: theme.margin.md,
+  },
+  deleteIcon: {
+    _web: {
+      _hover: {
+        transition: "all ease-in-out 250ms",
+        color: theme.colors.red,
+      },
+    },
+  },
+}));

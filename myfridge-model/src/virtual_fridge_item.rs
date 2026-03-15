@@ -24,6 +24,14 @@ impl Entity {
             .all(db)
             .await
     }
+
+    pub async fn delete(db: &DatabaseConnection, user_id: i32, item_id: i32) -> QueryResult<bool> {
+        let result = Self::delete_by_id(item_id)
+            .filter(Column::UserId.eq(user_id))
+            .exec(db)
+            .await?;
+        Ok(result.rows_affected == 1)
+    }
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
